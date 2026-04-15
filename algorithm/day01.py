@@ -783,23 +783,250 @@ class Solution:
 # 输出：2
 # 解释：13 = 4 + 9
     def numSquares(self, n: int) -> int:
+        dp = [0] + [float('inf')] * (n + 1)
+        for i in range(1, n + 1):
+            j = 1
+            while j * j <= i:
+                dp[i] = min(dp[i], dp[i - j * j] + 1)
+                j += 1
+        return dp[n]
+# 给你一个整数数组 coins ，表示不同面额的硬币；以及一个整数 amount ，表示总金额
+# 计算并返回可以凑成总金额所需的 最少的硬币个数 。如果没有任何一种硬币组合能组成总金额，返回 -1
+# 你可以认为每种硬币的数量是无限的。
+# 示例 1：
+# 输入：coins = [1, 2, 5], amount = 11
+# 输出：3
+# 解释：11 = 5 + 5 + 1
+# 示例 2：
+# 输入：coins = [2], amount = 3
+# 输出：-1
+# 示例 3：
+# 输入：coins = [1], amount = 0
+# 输出：0
+    def coinChange(self, coins: List[int], amount: int) -> int:
         '''
-        k1 = n
-        k2 = 12/n
-
-
-
-        dp[i] =
-        :param n:
+        dp[i]表示总金额i所需最少硬币个数
+        dp[0] = 0
+        dp[i] = min(dp[i], dp[i - j] + 1)
+        :param coins:
+        :param amount:
         :return:
         '''
+        if amount == 0:
+            return 0
+        dp = [float('inf')] * (amount + 1)
+        dp[0] = 0
+        for i in range(1, amount + 1):
+            for con in coins:
+                if i - con >= 0:
+                    dp[i] = min(dp[i], dp[i - con] + 1)
+        if dp[amount] == float('inf'):
+            dp[amount] = -1
+        return dp[amount]
+# 给你一个字符串 s 和一个字符串列表 wordDict 作为字典。如果可以利用字典中出现的一个或多个单词拼接出 s 则返回 true
+# 注意：不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用
+# 示例 1：
+# 输入: s = "leetcode", wordDict = ["leet", "code"]
+# 输出: true
+# 解释: 返回 true 因为 "leetcode" 可以由 "leet" 和 "code" 拼接成。
+# 示例 2：
+# 输入: s = "applepenapple", wordDict = ["apple", "pen"]
+# 输出: true
+# 解释: 返回 true 因为 "applepenapple" 可以由 "apple" "pen" "apple" 拼接成。
+#      注意，你可以重复使用字典中的单词。
+# 示例 3：
+# 输入: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
+# 输出: false
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        '''
+        dp[i] = dp[]
+        :param s:
+        :param wordDict:
+        :return:
+        '''
+        dp = [False] * (len(s) + 1)
+        dp[0] = True
+        for i in range(1, len(s) + 1):
+            for j in range(i):
+                if dp[j] and s[j:i] in wordDict:
+                    dp[i] = True
+                    break
+        return dp[len(s)]
+# 给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
+# 请必须使用时间复杂度为 O(log n) 的算法。
+# 示例 1:
+# 输入: nums = [1,3,5,6], target = 5
+# 输出: 2
+# 示例 2:
+# 输入: nums = [1,3,5,6], target = 2
+# 输出: 1
+# 示例 3:
+# 输入: nums = [1,3,5,6], target = 7
+# 输出: 4
+    def searchInsert(self, nums: List[int], target: int) -> int:
+        left = 0
+        right = len(nums) - 1
+        while left <= right:
+            midd = (right - left) // 2 + left
+            if nums[midd] == target:
+                return midd
+            elif nums[midd] < target:
+                left = midd + 1
+            elif nums[midd] > target:
+                right = midd - 1
+        return left
+# 给你一个满足下述两条属性的 m x n 整数矩阵：
+# 每行中的整数从左到右按非严格递增顺序排列
+# 每行的第一个整数大于前一行的最后一个整数
+# 给你一个整数 target ，如果 target 在矩阵中，返回 true ；否则，返回 false
+# 示例 1：
+# 输入：matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3
+# 输出：true
+# 示例 2：
+# 输入：matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 13
+# 输出：false
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        m = len(matrix)
+        n = len(matrix[0])
+        left = 0
+        right = m * n - 1
+        while left <= right:
+            mid = (right - left) // 2 + left
+            row = mid // n
+            col = mid % n
+            num = matrix[row][col]
+            if target == num:
+                return True
+            elif target > num:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return False
+# 给你一个按照非递减顺序排列的整数数组 nums，和一个目标值 target。请你找出给定目标值在数组中的开始位置和结束位置
+# 如果数组中不存在目标值 target，返回 [-1, -1]
+# 你必须设计并实现时间复杂度为 O(log n) 的算法解决此问题
+# 示例 1：
+# 输入：nums = [5,7,7,8,8,10], target = 8
+# 输出：[3,4]
+# 示例 2：
+# 输入：nums = [5,7,7,8,8,10], target = 6
+# 输出：[-1,-1]
+# 示例 3：
+# 输入：nums = [], target = 0
+# 输出：[-1,-1]
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        def search(nums: List[int], target: int) -> int:
+            left = 0
+            right = len(nums) - 1
+            index = len(nums)
+            while left <= right:
+                mid = (right - left) // 2 + left
+                if nums[mid] >= target:
+                    index = mid
+                    right = mid - 1
+                else:
+                    left = mid + 1
+            return index
+        left_index = search(nums, target)
+        if left_index == len(nums) or nums[left_index] != target:
+            return [-1, -1]
+        right_index = search(nums, target+1) - 1
+        return [left_index, right_index]
+
+        # return_arr = [-1,-1]
+        # if len(nums) == 1 and nums[0] == target:
+        #     return_arr = [0, 0]
+        #     return return_arr
+        # for i in range(len(nums)):
+        #     if nums[i] == target:
+        #         return_arr[0] = i
+        #         flag = True
+        #         while flag:
+        #             if nums[i] == target and i < len(nums) - 1:
+        #                 return_arr[1] = i
+        #                 i += 1
+        #             else:
+        #                 flag = False
+        #         return return_arr
+        # return return_arr
+        # return_arr = []
+        # left = 0
+        # right = len(nums) - 1
+        # flag = False
+        # while left <= right:
+        #     midd = (right - left) // 2 + left
+        #         if nums[midd] == target:
+        #             flag = True
+# 整数数组 nums 按升序排列，数组中的值 互不相同
+# 在传递给函数之前，nums 在预先未知的某个下标 k（0 <= k < nums.length）上进行了 向左旋转，
+# 使数组变为 [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]（下标从0开始计数）
+# 例如， [0,1,2,4,5,6,7] 下标 3 上向左旋转后可能变为 [4,5,6,7,0,1,2] 。
+# 给你 旋转后 的数组 nums 和一个整数 target ，如果 nums 中存在这个目标值 target ，则返回它的下标，否则返回 -1 。
+# 你必须设计一个时间复杂度为 O(log n) 的算法解决此问题。
+# 示例 1：
+# 输入：nums = [4,5,6,7,0,1,2], target = 0    [0 1 2 4 5 6 7] index= 3
+# 输出：4
+# 示例 2：
+# 输入：nums = [4,5,6,7,0,1,2], target = 3
+# 输出：-1
+# 示例 3：
+# 输入：nums = [1], target = 0
+# 输出：-1
+    def search1(self, nums: List[int], target: int) -> int:
+
+
+
+
+
+
+        if len(nums) == 1:
+            if nums[0] == target:
+                return 0
+            else:
+                return -1
+        index = 0
+        for i in range(len(nums) - 1):
+            if nums[i] > nums[i + 1]:
+                index = i
+        nums.sort()
+        left, right = 0, len(nums) - 1
+        while left <= right:
+            mid = (right - left) // 2 + left
+            if nums[mid] == target:
+                if mid > index:
+                    return mid - index
+                else:
+                    return mid + index + 1
+            elif nums[mid] > target:
+                right = mid - 1
+            else:
+                left = mid + 1
+        return -1
 
 
 
 s = Solution()
+index = s.search1([4,5,6,7,0,1,2], 3)
+print(index)
+#arr = s.searchRange([5,7,7,8,8,10], 8)
+#arr = s.searchRange([5,7,7,8,8,10], 6)
+#print(arr)
+#flag = s.searchMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 3)
+# flag = s.searchMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 13)
+# print(flag)
+# index = s.searchInsert([1,3,5,6],7)
+# print(index)
+#num = s.coinChange([1, 2, 5], 11)
+#num = s.coinChange([2], 3)
+# num = s.coinChange([1], 0)
+# print(num)
+# s = 3
+# print(s // 2)
+# num = s.numSquares(13)
+# print(num)
 #num = s.rob([1,2,3,1])
-num = s.rob([2,7,9,3,1])
-print(num)
+#num = s.rob([2,7,9,3,1])
+#print(num)
 # arr = s.generate1(5)
 # print(arr)
 # time = s.climbStairs1(4)
