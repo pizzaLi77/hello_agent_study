@@ -1,12 +1,16 @@
 import collections
 from collections import Counter
-from typing import List
+from typing import List, Optional
+
 
 #from requests.utils import from_key_val_list
 
 
 
-
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
 
 
 class Solution:
@@ -1004,12 +1008,198 @@ class Solution:
         return -1
 
 #给你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 null
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+        arr = set()
+        while headA:
+            arr.add(headA)
+            headA = headA.next
+        while headB:
+            if headB in arr:
+                return headB
+            else:
+                headB = headB.next
+        return None
+
+    def getIntersectionNode1(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+        left = headA
+        right = headB
+        while left != right:
+            left = left.next if left else headB
+            right = right.next if right else headA
+        return left
 
 
+
+    #给你单链表的头节点 head ，请你反转链表，并返回反转后的链表
+    class ListNode:
+        def __init__(self, val=0, next=None):
+            self.val = val
+            self.next = next
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        new_head = ListNode(0)
+        while head:
+            if new_head.next:
+                temp = new_head.next
+                new_head.next = ListNode(head.val)
+                new_head.next.next = temp
+            else:
+                new_head.next = ListNode(head.val)
+            head = head.next
+        return new_head.next
+
+    def reverseList1(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        prev = None
+        he = head
+        while he:
+            temp = he.next
+            he.next = prev
+            prev = he
+            he = temp
+        return prev
+#给你一个单链表的头节点 head ，请你判断该链表是否为回文链表。如果是，返回 true ；否则，返回 false
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+
+        def compareNode(head1: ListNode, head2: ListNode) -> bool:
+            while head1:
+                if head1.val != head2.val:
+                    return False
+                else:
+                    head1 = head1.next
+                    head2 = head2.next
+            return True
+        prev = None
+        he = head
+
+        dummy = ListNode(1)
+        head_temp = dummy
+        while head:
+            head_temp.next = ListNode(head.val)
+            head_temp = head_temp.next
+            head = head.next
+        while he:
+            temp = he.next
+            he.next = prev
+            prev = he
+            he = temp
+        return compareNode(prev, dummy.next)
+
+    def isPalindrome1(self, head: Optional[ListNode]) -> bool:
+        if not head or not head.next:
+            return True
+        slow = fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        if fast:
+            slow = slow.next
+        #链表反转
+        prev= None
+        while slow:
+            temp = slow.next
+            slow.next = prev
+            prev = slow
+            slow = temp
+        p1 = head
+        p2 = prev
+        while p2:
+            if p2.val != p1.val:
+                return False
+            p1 = p1.next
+            p2 = p2.next
+        return True
+# 给你一个链表的头节点 head ，判断链表中是否有环
+# 如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，
+# 评测系统内部使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。注意：pos 不作为参数进行传递 。仅仅是为了标识链表的实际情况
+# 如果链表中存在环 ，则返回 true 。 否则，返回 false
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        arr = set()
+        while head:
+            if head in arr:
+                return True
+            else:
+                arr.add(head)
+            head = head.next
+        return False
+
+    def hasCycle1(self, head: Optional[ListNode]) -> bool:
+        slow = head
+        fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+        return False
+# 给定一个链表的头节点head ，返回链表开始入环的第一个节点。 如果链表无环，则返回null。
+# 如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，
+# 评测系统内部使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）
+# 如果 pos 是 -1，则在该链表中没有环。注意：pos 不作为参数进行传递，仅仅是为了标识链表的实际情况,不允许修改链表
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        arr = set()
+        while head:
+            if head in arr:
+                return head
+            else:
+                arr.add(head)
+            head = head.next
+        return None
+
+# 将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的
+# 示例 1：
+# 输入：l1 = [1,2,4], l2 = [1,3,4]
+# 输出：[1,1,2,3,4,4]
+# 示例 2：
+# 输入：l1 = [], l2 = []
+# 输出：[]
+# 示例 3：
+# 输入：l1 = [], l2 = [0]
+# 输出：[0]
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        pass
 
 s = Solution()
-index = s.search1([4,5,6,7,0,1,2], 3)
-print(index)
+
+hea1 = ListNode(1)
+hea2 = ListNode(2)
+hea3 = ListNode(2)
+hea4 = ListNode(1)
+hea1.next = hea2
+hea2.next = hea3
+hea3.next = hea4
+flag = s.isPalindrome(hea1)
+print(flag)
+# hea1 = ListNode(1)
+# hea2 = ListNode(2)
+# hea3 = ListNode(3)
+# hea4 = ListNode(4)
+# hea5 = ListNode(5)
+# hea1.next = hea2
+# hea2.next = hea3
+# hea3.next = hea4
+# hea4.next = hea5
+# node_new = s.reverseList(hea1)
+# print(node_new)
+# common1 = ListNode(8)
+# common2 = ListNode(4)
+# common3 = ListNode(5)
+# common1.next = common2
+# common2.next = common3
+#
+# nodeA1 = ListNode(4)
+# nodeA2 = ListNode(1)
+# nodeA1.next = nodeA2
+# nodeA2.next = common1
+#
+# nodeB1 = ListNode(5)
+# nodeB2 = ListNode(6)
+# nodeB1.next = nodeB2
+# nodeB2.next = common1
+# val = s.getIntersectionNode1(nodeA1, nodeB1)
+# print(val)
+
+
+# index = s.search1([4,5,6,7,0,1,2], 3)
+# print(index)
 #arr = s.searchRange([5,7,7,8,8,10], 8)
 #arr = s.searchRange([5,7,7,8,8,10], 6)
 #print(arr)
