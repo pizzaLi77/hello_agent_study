@@ -8,9 +8,9 @@ from typing import List, Optional
 
 
 class ListNode:
-    def __init__(self, x):
-        self.val = x
-        self.next = None
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
 
 
 class Solution:
@@ -1155,19 +1155,167 @@ class Solution:
 # 输入：l1 = [], l2 = [0]
 # 输出：[0]
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
-        pass
+        return_node = ListNode(1)
+        temp_return = return_node
+        list_to_sort = []
+        while list1:
+            list_to_sort.append(list1.val)
+            list1 = list1.next
+        while list2:
+            list_to_sort.append(list2.val)
+            list2 = list2.next
+        list_to_sort.sort()
+        for i in range(len(list_to_sort)):
+            temp_return.next = ListNode(list_to_sort[i])
+            temp_return = temp_return.next
+        return return_node.next
+
+    def mergeTwoLists1(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        node_return = ListNode(1)
+        temp = node_return
+        while list1 and list2:
+            if list1.val <= list2.val:
+                temp.next = ListNode(list1.val)
+                list1 = list1.next
+            else:
+                temp.next = ListNode(list2.val)
+                list2 = list2.next
+            temp = temp.next
+        if list1:
+            temp.next = list1
+        else:
+            temp.next = list2
+        return node_return.next
+# 给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。
+# 请你将两个数相加，并以相同形式返回一个表示和的链表。
+# 你可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        node_return = ListNode(0)
+        temp_return = node_return
+        sum_seq = 0
+        while l1 or l2:
+            sum = 0
+            sum += sum_seq
+            sum_seq = 0
+            if l1:
+                sum += l1.val
+                l1 = l1.next
+            if l2:
+                sum += l2.val
+                l2 = l2.next
+            if sum // 10 > 0:
+                sum_seq += 1
+                sum = sum % 10
+            temp_return.next = ListNode(sum)
+            temp_return = temp_return.next
+        if sum_seq != 0:
+            temp_return.next = ListNode(sum_seq)
+        return node_return.next
+#给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        temp = head
+        temp1 = head
+        len = 0
+        while temp1:
+            len += 1
+            temp1 = temp1.next
+        front = len - n + 1
+        index = 1
+        if front == index:
+            #表明移除的是头节点 直接返回
+            temp = temp.next
+            return temp
+        prev = None
+        while temp:
+            if index == front - 1:
+                prev = temp
+            if index == front:
+                if temp.next:
+                    prev.next = temp.next
+                else:
+                    prev.next = None
+            temp = temp.next
+            index += 1
+        return head
+
+    def removeNthFromEnd1(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        dummy = ListNode(0, head)
+        slow = dummy
+        fast = dummy
+        for i in range(n):
+            fast = fast.next
+        while fast.next:
+            fast = fast.next
+            slow = slow.next
+        slow.next = slow.next.next
+        return dummy.next
+#给你一个链表，两两交换其中相邻的节点，并返回交换后链表的头节点。你必须在不修改节点内部的值的情况下完成本题（即，只能进行节点交换）
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode(0, head)
+        prev = dummy
+        while prev.next and prev.next.next:
+            first = prev.next
+            second = prev.next.next
+
+            first.next = second.next
+            second.next = first
+            prev.next = second
+
+            prev = first
+        return dummy.next
+#给你链表的头结点 head ，请将其按 升序 排列并返回 排序后的链表
+    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        dump_head = head
+        dummy = ListNode(0)
+        dump_dummy = dummy
+        arr = []
+        while dump_head:
+            arr.append(dump_head.val)
+            dump_head = dump_head.next
+        arr.sort()
+        for i in range(len(arr)):
+            dump_dummy.next = ListNode(arr[i])
+            dump_dummy = dump_dummy.next
+        return dummy.next
+
 
 s = Solution()
 
+
 hea1 = ListNode(1)
 hea2 = ListNode(2)
-hea3 = ListNode(2)
-hea4 = ListNode(1)
+hea3 = ListNode(3)
+hea4 = ListNode(4)
+#hea5 = ListNode(5)
 hea1.next = hea2
 hea2.next = hea3
 hea3.next = hea4
-flag = s.isPalindrome(hea1)
-print(flag)
+#hea4.next = hea5
+s.swapPairs(hea1)
+
+
+
+# node_arr = s.removeNthFromEnd1(hea1, 2)
+# print(node_arr)
+
+# het1 = ListNode(5)
+# het2 = ListNode(6)
+# het3 = ListNode(4)
+# het1.next = het2
+# het2.next = het3
+# node_arr = s.addTwoNumbers(hea1, het1)
+# print(node_arr)
+# node11 = s.mergeTwoLists1(hea1, het1)
+# print(node11)
+# hea1 = ListNode(1)
+# hea2 = ListNode(2)
+# hea3 = ListNode(2)
+# hea4 = ListNode(1)
+# hea1.next = hea2
+# hea2.next = hea3
+# hea3.next = hea4
+# flag = s.isPalindrome(hea1)
+# print(flag)
 # hea1 = ListNode(1)
 # hea2 = ListNode(2)
 # hea3 = ListNode(3)
