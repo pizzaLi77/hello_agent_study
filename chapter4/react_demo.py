@@ -1,18 +1,20 @@
 import os
 
-import load_dotenv
+from pathlib import Path
+
+from dotenv import load_dotenv
 from openai import OpenAI
 
-load_dotenv()
+load_dotenv(Path(__file__).parent.parent / "llm.env")
 class HelloAgentsLLM:
     def __init__(self, model: str = None, apiKey: str = None, baseUrl: str = None, timeout: int = None):
         self.model = model or os.getenv("LLM_MODEL_ID")
         apiKey = apiKey or os.getenv("LLM_API_KEY")
         baseUrl = baseUrl or os.getenv("LLM_BASE_URL")
-        timeout = timeout or int(os.getenv("LLM_HTTP_TIMEOUT"), 60)
+        timeout = timeout or int(os.getenv("LLM_HTTP_TIMEOUT", 60))
         if not all([self.model, apiKey, baseUrl]):
             raise ValueError("模型id，api密钥，服务地址需提供或在env文件定义")
-        self.client = OpenAI(apiKey= apiKey, baseUrl=baseUrl,timeout=timeout)
+        self.client = OpenAI(api_key=apiKey, base_url=baseUrl, timeout=timeout)
 
     def think(self, messages: list[dict[str, str]], temperature: float = 0.5) -> str:
         print(f"正在调用{self.model}模型🧠。。。")
