@@ -1,4 +1,5 @@
 import os
+import re
 
 import requests
 from openai import OpenAI
@@ -138,7 +139,7 @@ for i in range(5):  # 设置最大循环次数
     full_prompt = "\n".join(prompt_history)
 
     # 3.2. 调用LLM进行思考
-    llm_output = llm.generate(full_prompt, system_prompt=AGENT_SYSTEM_PROMPT)
+    llm_output = llm.generate(full_prompt, system_prompt=user_prompt)
     # 模型可能会输出多余的Thought-Action，需要截断
     match = re.search(r'(Thought:.*?Action:.*?)(?=\n\s*(?:Thought:|Action:|Observation:)|\Z)', llm_output, re.DOTALL)
     if match:
