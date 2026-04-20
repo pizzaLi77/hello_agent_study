@@ -1292,7 +1292,7 @@ hea2.next = hea3
 hea3.next = hea4
 #hea4.next = hea5
 s.swapPairs(hea1)
-
+print(11)
 
 
 # node_arr = s.removeNthFromEnd1(hea1, 2)
