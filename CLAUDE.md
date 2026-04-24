@@ -18,7 +18,7 @@ Execute individual Python files directly:
 ```bash
 python chapter1/agent01.py
 python chapter3/transformer_demo.py
-python chapter4/react_demo.py
+python chapter4/llm_client.py
 python algorithm/day01.py
 ```
 

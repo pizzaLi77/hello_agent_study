@@ -41,14 +41,14 @@ if __name__ == "__main__":
     try:
         llm_client = HelloAgentsLLM()
         example_message = [
-            {"role": "system", "content": "you are a helpful assistant that writes python code"},
-            {"role": "user", "content": "写个快排算法"}
+            {"role": "system", "content": "you are a helpful doctor"},
+            {"role": "user", "content": "下午好"}
         ]
         print("===llm...===")
         response_text = llm_client.think(example_message)
-        if response_text:
-            print("--respinse--")
-            print(response_text)
+        # if response_text:
+        #     print("--respinse--")
+        #     print(response_text)
     except Exception as e:
         print(e)
 
