@@ -1,3 +1,4 @@
+from collections import deque
 from typing import Optional, List
 
 
@@ -66,35 +67,82 @@ class Solution:
     # [1,2,3,4,5,6]
     def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
         def dfs_bst(nums: List[int]) -> Optional[TreeNode]:
+            if not nums:
+                return None
             mid = len(nums) // 2
             root = TreeNode(nums[mid])
             root.left = dfs_bst(nums[:mid])
-            root.right = dfs_bst(nums[mid:])
+            root.right = dfs_bst(nums[mid+1:])
             return root
         return dfs_bst(nums)
+    def sortedArrayToBST1(self, nums: List[int]) -> Optional[TreeNode]:
+        def dfs_bst1(left: int, right: int) -> Optional[TreeNode]:
+            if left > right:
+                return None
+            mid = (right + left) // 2
+            root = TreeNode(nums[mid])
+            root.left = dfs_bst1(left, mid-1)
+            root.right = dfs_bst1(mid+1, right)
+            return root
+        return dfs_bst1(0, len(nums)-1)
 
+    # 给你二叉树的根节点 root ，返回其节点值的 层序遍历 （即逐层地，从左到右访问所有节点）
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        self.arr = []
+        def dfs_tree(node: TreeNode, depth: int) -> None:
+            if not node:
+                return
+            if depth == len(self.arr):
+                self.arr.append([])
+            self.arr[depth].append(node.val)
+            dfs_tree(node.left, depth+1)
+            dfs_tree(node.right, depth+1)
+        dfs_tree(root, 0)
+        return self.arr
 
-
-
-
-
-
-
-
-
-
+    def levelOrder1(self, root: Optional[TreeNode]):
+        if not root:
+            return []
+        ans = []
+        q = deque([root])
+        while q:
+            level = []
+            size = len(q)  # 先记住当前层有几个节点
+            for _ in range(size):
+                node = q.popleft()
+                level.append(node.val)
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+            ans.append(level)
+        return ans
+# 给你一个二叉树的根节点 root ，判断其是否是一个有效的二叉搜索树
+# 有效 二叉搜索树定义如下：
+# 节点的左子树只包含 严格小于 当前节点的数
+# 节点的右子树只包含 严格大于 当前节点的数
+# 所有左子树和右子树自身必须也是二叉搜索树
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        pass
 
 
 s = Solution()
-# treeNode = TreeNode(1)
-# treeNode.left = TreeNode(2)
-# treeNode.right = TreeNode(3)
+treeNode = TreeNode(3)
+treeNode.left = TreeNode(9)
+treeNode.right = TreeNode(20)
+treeNode.right.left = TreeNode(15)
+treeNode.right.right = TreeNode(7)
+
 # treeNode.left.left = TreeNode(4)
 # treeNode.left.right = TreeNode(5)
-# treeNode.right.left = TreeNode(4)
-# treeNode.right.right = TreeNode(3)
+
 #print(s.diameterOfBinaryTree(treeNode))
 # arr = s.inorderTraversal(treeNode)
 # print(arr)
-arr = [-10,-3,0,5,9]
-s.sortedArrayToBST(arr)
+# arr = [-10,-3,0,5,9]
+# treenode = s.sortedArrayToBST(arr)
+# print(treenode)
+# print(len(arr) // 2)
+# print(arr[:3])
+# print(arr[3:])
+s.levelOrder1(treeNode)
