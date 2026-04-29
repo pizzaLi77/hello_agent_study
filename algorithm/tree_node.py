@@ -123,15 +123,53 @@ class Solution:
 # 节点的右子树只包含 严格大于 当前节点的数
 # 所有左子树和右子树自身必须也是二叉搜索树
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
-        pass
+        arr = []
+        def invert_num(root: TreeNode):
+            if not root:
+                return
+            invert_num(root.left)
+            arr.append(root.val)
+            invert_num(root.right)
+        invert_num(root)
+        for i in range(1, len(arr)):
+            if arr[i - 1] >= arr[i]:
+                return False
+        return True
 
+    def isValidBST1(self, root: Optional[TreeNode]) -> bool:
+        self.prev = float('-inf')
+        def inorder(node):
+            if not node:
+                return True
+            if not inorder(node.left):
+                return False
+            if node.val <= self.prev:
+                return False
+            self.prev = node.val
+            return inorder(node.right)
+        return inorder(root)
+
+    def isValidBST2(self, root: Optional[TreeNode]) -> bool:
+        def check(node: TreeNode, min, max) -> bool:
+            if not node:
+                return True
+            if not (min < node.val < max):
+                return False
+            return check(node.left, min, node.val) and check(node.right, node.val, max)
+        return check(root, -float('inf'), float('inf'))
 
 s = Solution()
-treeNode = TreeNode(3)
-treeNode.left = TreeNode(9)
-treeNode.right = TreeNode(20)
-treeNode.right.left = TreeNode(15)
+treeNode = TreeNode(5)
+treeNode.left = TreeNode(4)
+treeNode.right = TreeNode(8)
+treeNode.right.left = TreeNode(6)
 treeNode.right.right = TreeNode(7)
+# treeNode.right.right.left = TreeNode(5)
+# treeNode.right.right.right = TreeNode(8)
+
+
+flag = s.isValidBST1(treeNode)
+print(flag)
 
 # treeNode.left.left = TreeNode(4)
 # treeNode.left.right = TreeNode(5)
@@ -145,4 +183,4 @@ treeNode.right.right = TreeNode(7)
 # print(len(arr) // 2)
 # print(arr[:3])
 # print(arr[3:])
-s.levelOrder1(treeNode)
+#s.levelOrder1(treeNode)
