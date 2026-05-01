@@ -2,6 +2,11 @@ from collections import deque
 from typing import Optional, List
 
 
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
@@ -157,19 +162,97 @@ class Solution:
                 return False
             return check(node.left, min, node.val) and check(node.right, node.val, max)
         return check(root, -float('inf'), float('inf'))
+    # 给定一个二叉搜索树的根节点 root ，和一个整数 k ，请你设计一个算法查找其中第 k 小的元素（k 从 1 开始计数）
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        arr = []
+        def dfs(root: Optional[TreeNode]):
+            if not root:
+                return
+            dfs(root.left)
+            arr.append(root.val)
+            dfs(root.right)
+        dfs(root)
+        return arr[k - 1]
+    # 给定一个二叉树的根节点root，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+        arr = []
+        queue = deque([root])
+        while queue:
+            size = len(queue)
+            for i in range(size):
+                node = queue.popleft()
+                if i == size - 1:
+                    arr.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+        return arr
+
+# 给你二叉树的根结点 root ，请你将它展开为一个单链表：
+# 展开后的单链表应该同样使用 TreeNode ，其中 right 子指针指向链表中下一个结点，而左子指针始终为 null 。
+# 展开后的单链表应该与二叉树 先序遍历 顺序相同
+    def flatten(self, root: Optional[TreeNode]) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        if not root:
+            return
+        arr = []
+        def dfs(root: Optional[TreeNode]):
+            if not root:
+                return
+            arr.append(root)
+            dfs(root.left)
+            dfs(root.right)
+        dfs(root)
+
+        for i in range(len(arr) - 1):
+            arr[i].left = None
+            arr[i].right = arr[i + 1]
+        arr[-1].left = None
+        arr[-1].right = None
+    # 给定两个整数数组 preorder 和 inorder ，其中 preorder 是二叉树的先序遍历， inorder 是同一棵树的中序遍历，请构造二叉树并返回其根节点
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        pass
+      #   5
+      #  / \
+      # 4   8
+      #    / \
+      #   6   7
+      #   前序：[5,4,8,null,null,6,7]
+      # 
+      #   中序：[null,4,null,,5,6,8,7]
+
+
+
+
+
+
 
 s = Solution()
-treeNode = TreeNode(5)
-treeNode.left = TreeNode(4)
-treeNode.right = TreeNode(8)
-treeNode.right.left = TreeNode(6)
-treeNode.right.right = TreeNode(7)
+treeNode = TreeNode(1)
+treeNode.left = TreeNode(2)
+treeNode.right = TreeNode(5)
+treeNode.left.left = TreeNode(3)
+treeNode.left.right = TreeNode(4)
+treeNode.right.right = TreeNode(6)
+# treeNode.right.left = TreeNode(6)
+# treeNode.right.right = TreeNode(7)
 # treeNode.right.right.left = TreeNode(5)
 # treeNode.right.right.right = TreeNode(8)
 
+node = s.flatten(treeNode)
 
-flag = s.isValidBST1(treeNode)
-print(flag)
+
+# arr = s.rightSideView(treeNode)
+# print(arr)
+# k_value = s.kthSmallest(treeNode, 1)
+# print(k_value)
+# flag = s.isValidBST1(treeNode)
+# print(flag)
 
 # treeNode.left.left = TreeNode(4)
 # treeNode.left.right = TreeNode(5)
