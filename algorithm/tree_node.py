@@ -216,7 +216,22 @@ class Solution:
         arr[-1].right = None
     # 给定两个整数数组 preorder 和 inorder ，其中 preorder 是二叉树的先序遍历， inorder 是同一棵树的中序遍历，请构造二叉树并返回其根节点
     def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        if not preorder or not inorder:
+            return None
+        #根据前序遍历拿到头结点
+        head = preorder[0]
+        root = TreeNode(head)
+        midd = inorder.index(head)
+        root.left = self.buildTree(preorder[1:midd+1], inorder[:midd])
+        root.right = self.buildTree(preorder[midd+1:], inorder[midd+1:])
+        return root
+
+    #给定一个二叉树的根节点 root ，和一个整数 targetSum ，求该二叉树里节点值之和等于targetSum的路径的数目
+    #路径不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点）
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
         pass
+
+
       #   5
       #  / \
       # 4   8
