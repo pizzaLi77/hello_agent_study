@@ -121,6 +121,17 @@ class Solution:
                     left += 1
                     right -= 1
         return arr
+#实现一个函数 获取子字符串在父字符串所有位置的函数,不允许使用现成的函数
+#如：字符串1：abcdefgdefx  子字符串2：def  输出：[3,7]
+    def get_loca(self, parent_arr: list[int], child_arr: list[int]) -> List[int]:
+        left = 0
+        right = 0
+
+        for i in range(len(parent_arr)):
+            pass
+
+#给定一个长度大于5的整数类型数组，找出平均值最大的三个连续数
+#如：输入：[1,5,3,-1,9,8,7,0,1]  输出：[9,8,7]
 
 
 

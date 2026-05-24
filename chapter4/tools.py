@@ -59,6 +59,8 @@ class ToolExecutor:
         """
         根据名称获取一个工具的执行函数
         """
+        #get(name, {}).get("func") 保证若去字典中那key=name的数据，
+        #若为none我初始化一个字典去get("func") 保证根据name查找尽管不存在也不会报错
         return self.tools.get(name, {}).get("func")
     def getAvailableTools(self) ->str:
         """

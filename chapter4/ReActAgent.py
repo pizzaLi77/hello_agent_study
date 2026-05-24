@@ -48,7 +48,7 @@ class ReActAgent:
             if not response_text:
                 print("错误：llm未能返回有效响应")
                 break
-
+            print(f'llm_response：{response_text}')
             thought, action = self._parse_output(response_text)
             if thought:
                 print(f'思考：{thought}')
@@ -100,6 +100,11 @@ class ReActAgent:
 
 
 if __name__ == '__main__':
+    # 1)初始化llm_client大模型客户端，tool工具注册执行器
+    # 2)初始化react_agent，构造函数需要llm_client大模型客户端, tool工具注册，最大循环步骤，三个参数
+    # 3)将工具描述，问题，上下文历史填充进模版中，调用llm将填充信息后的模版给到llm，llm进行思考
+    # 4)解析llm返回的结果，将思考与行动进行正则解析，打印出模型的思考想法，供开发者后续调整提示词模版，然后行动就是模型会告知需要调用的工具信息然后去调用对应工具并返回其结果
+    # 5)观察就是将工具返回结果注入到历史上下文中，llm能看到上一轮的工具调用执行结果，供下一轮llm进行思考决策
     llm = HelloAgentsLLM()
     tool_executor = ToolExecutor()
     search_description = "一个网页搜索引擎，当你需要回答关于时事、事实以及在知识库找不到信息时，应用此工具"
