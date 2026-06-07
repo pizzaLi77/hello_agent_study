@@ -3,11 +3,11 @@ import os
 
 from langchain.agents import create_agent
 
-agent = create_agent(
-    model="deepseek-v4-flash",
-    system_prompt="你是一位小助手"
-)
-res = agent.invoke(
-    {"message": [{"role":"user", "content":"天气怎么样"}]}
-)
-print(res)
+# agent = create_agent(
+#     model="deepseek-v4-flash",
+#     system_prompt="你是一位小助手"
+# )
+# res = agent.invoke(
+#     {"message": [{"role":"user", "content":"天气怎么样"}]}
+# )
+# print(res)
