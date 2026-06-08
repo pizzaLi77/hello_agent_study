@@ -13,7 +13,14 @@ async def main():
             HumanMessage(content="帮我分析下当前项目下包subagent下代码")
         ]
     })
-    print(result['messages'][-1].content)
 
+    # for i in result['messages']:
+    #     msg_type = getattr(result['messages'][i], "type", "?")
+    #     print(f'[{i}] {msg_type}: {result['messages'][i].content} \n')
+    for i, msg in enumerate(result['messages']):
+        msg_type = getattr(msg, "type", "?")
+        print(f'整体流程详述：[{i}] {msg_type}: {msg.content} \n')
+    print('=================================')
+    print("最后答案：：：" + result['messages'][-1].content)
 #启动异步函数
 asyncio.run(main())

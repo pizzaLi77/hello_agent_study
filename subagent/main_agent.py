@@ -1,6 +1,7 @@
 from langchain.agents import create_agent
 
 from subagent.task_pool import build_task_tool
+from subagent.tools import ALL_TOOLS
 
 # agent = create_agent(
 #     model="deepseek-v4-flash",
@@ -36,7 +37,7 @@ MAIN_AGENT_PROMPT = """
 def build_main_agent(model):
     task_tool = build_task_tool(
         model=model,
-        subagent_tools=[]
+        subagent_tools=ALL_TOOLS
     )
     return create_agent(
         model=model,
