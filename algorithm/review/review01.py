@@ -145,8 +145,18 @@ class Solution:
 s = Solution()
 
 nums = [-1,0,1,2,-1,-4]
-arr = s.threeSum(nums)
-print(arr)
+for i in nums:
+    #拿不到索引，只能拿到value
+    print(i)
+for i in range(len(nums)):
+    #可以拿到索引与value值
+    print(f'索引：{i},value值：{nums[i]}')
+
+for i, val in enumerate(nums):
+    #可以拿到索引与value值
+    print(f'索引：{i}，对应值：{val}')
+# arr = s.threeSum(nums)
+# print(arr)
 # he = s.maxArea([1,8,6,2,5,4,8,3,7])
 # print(he)
 # nums = [0,1,0,3,12]

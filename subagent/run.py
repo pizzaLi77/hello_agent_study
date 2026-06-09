@@ -7,10 +7,10 @@ from subagent.main_agent import build_main_agent
 
 async def main():
     model = ChatDeepSeek(model="deepseek-v4-flash")
-    agent = build_main_agent(model)
+    agent = build_main_agent(model, 2)
     result = await agent.ainvoke({
         "messages": [
-            HumanMessage(content="帮我分析下当前项目下包subagent下代码")
+            HumanMessage(content="帮我分析下当前项目下包chapter4下代码")
         ]
     })
 
