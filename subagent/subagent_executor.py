@@ -11,8 +11,8 @@ class SubagentExecutor:
         self.tools = tools or []
 
     async def run(self, task_prompt: str, seq: int) -> str:
-        print(f'第{seq}次创建子agent，即将开始执行run方法')
-        print(f'第{seq}个子agent需要做的任务是：{task_prompt}')
+        # print(f'第{seq}次创建子agent，即将开始执行run方法')
+        # print(f'第{seq}个子agent需要做的任务是：{task_prompt}')
         agent = create_agent(
             model=self.model,
             tools=self.tools,

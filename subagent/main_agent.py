@@ -29,7 +29,15 @@ MAIN_AGENT_PROMPT = """
 不要为简单任务调用 task。
 不要把一个单步任务包装成子 Agent。
 
-调用 task 前，先做任务分组：
+你可以自己使用文件工具查看目录和读取文件。
+不要为了列目录、确认文件是否存在而调用 task。
+
+task 只能用于真正的分析/审查任务。
+
+在调用 task 前，必须先确定所有待分析文件列表。
+如果待分析文件数量超过 {max_subagents}，必须把文件分组成不超过 {max_subagents} 组。
+每个分组必须覆盖至少一个文件，所有分组加起来必须覆盖全部目标文件。
+禁止因为子 agent 数量限制而遗漏文件。
 - 如果子任务数量 <= {max_subagents}，可以一个子任务对应一个子 Agent。
 - 如果子任务数量 > {max_subagents}，必须把多个子任务合并到同一个子 Agent 的 prompt 中。
 - 每个 task 的 prompt 必须列出它负责处理的所有文件/模块/问题。
@@ -53,6 +61,6 @@ def build_main_agent(model, max_subagent: int):
     )
     return create_agent(
         model=model,
-        tools=[task_tool],
+        tools=[task_tool, *ALL_TOOLS],
         system_prompt=main_agent_prompt,
     )
