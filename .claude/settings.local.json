@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(.venv/Scripts/pip install:*)"
+      "Bash(.venv/Scripts/pip install:*)",
+      "Bash(fastapi dev *)",
+      "Bash(.venv/Scripts/python *)",
+      "Bash(.venv/Scripts/uvicorn fastapi_study.main:app --reload)",
+      "Bash(curl -s \"http://127.0.0.1:8000/user/query?msg=hello\")",
+      "Bash(kill %1)"
     ]
   }
 }
