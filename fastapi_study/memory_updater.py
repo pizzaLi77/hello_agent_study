@@ -24,7 +24,7 @@ class MemoryUpdater:
         pre_memory_content = ''
         #读取当前记忆
         #加r目的是防止转义
-        file_path_main = r'D:\developSoftware\pycharmCode\hello-agent\memory_file'
+        file_path_main = r'D:\develop\pycharmcode\hello_agent_study\memory_file'
         temp = uuid.uuid4().hex
         full_path_temp = file_path_main + '\\' + temp + '.tmp'
         full_path_main = file_path_main + '\\' + 'memory_01.txt'
